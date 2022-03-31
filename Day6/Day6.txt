@@ -1,0 +1,44 @@
+sudo apt update
+sudo apt install apt-transport-https ca-certificates curl software-properties-common
+curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
+sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu focal stable"
+apt-cache policy docker-ce
+sudo systemctl status docker
+sudo usermod -aG docker dina
+su - dina
+sudo usermod -aG docker dina
+sudo apt update
+sudo apt docker-compose
+mkdir ~/odoo
+cd ~/odoo
+nano docker-compose.yml
+
+------------------------
+version: '3'
+services:
+  web:
+    image: odoo:14.0
+    depends_on:
+      - mydb
+    ports:
+      - "8069:8069"
+    environment:
+    - HOST=mydb
+    - USER=odoo
+    - PASSWORD=myodoo
+  mydb:
+    image: postgres:13
+    environment:
+      - POSTGRES_DB=postgres
+      - POSTGRES_PASSWORD=myodoo
+      - POSTGRES_USER=odoo
+---------------------------
+
+
+docker-compose up -d
+curl --head http://localhost:8069 
+sudo systemctl start apache2
+
+in browser
+
+http://localhost:8069
